@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function calculation(num1,num2)
+        {
+            let sum,mul;
+            sum=num1+num2;
+            mul=num1*num2;
+            return {sum,mul};
+        }
+        let {sum,mul}=calculation(10,30);
+        console.log(sum,mul);
+    </script>
+    <script>
+        function greet(name='guest')
+        {
+            console.log(`hello ${name}`);
+
+        }
+        greet();
+        greet("ratan");
+    </script>
+    <script>
+        function calculateTotalAndAverage(maths,social,science)
+        {
+            let totalMarks,averageMarks;
+            totalMarks=maths+social+science;
+            averageMarks=totalMarks/3;
+            return {totalMarks,averageMarks};
+
+        }
+        let {totalMarks,averageMarks}=calculateTotalAndAverage(80,75,90);
+        console.log(totalMarks,averageMarks);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    
+  function calculateOrderBill(name, price, quantity, taxRate = 10, shippingFee = 50, platformFee = 5)
+   {
+    let subTotal = price * quantity;
+    let taxAmount = subTotal * (taxRate / 100);
+    let totalCost = subTotal + taxAmount + shippingFee + platformFee;
+    return {
+      subTotal,
+      taxAmount,
+      totalCost
+    }
+}
+let result = calculateOrderBill("Example Product", 100, 2);
+  console.log("Subtotal: ", result.subTotal);
+  console.log("Tax Amount: ", result.taxAmount);
+  console.log("Total Cost: ", result.totalCost);
+
+//let {subTotal,taxAmount,totalCost}= calculateOrderBill("Example Product", 100, 2);
+ // console.log(subTotal,totalCost,taxAmount);
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
