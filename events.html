@@ -1,0 +1,174 @@
+<html>
+    <head>
+         <style>
+        .myButton {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton2 {
+            background-color:rgb(200, 62, 85);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton3 {
+            background-color: skyblue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton4 {
+            background-color:yellowgreen;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton5 {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton6 {
+            background-color:rgb(199, 17, 199);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+          .myButton7 {
+            background-color: yellow;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .myButton:hover {
+            background-color: darkgreen;
+        }
+        .key-pressed {
+              background-color: skyblue;
+              border: 2px solid rgb(208, 30, 30);
+        }
+        .key-up {
+             background-color: yellowgreen;
+             border: 1px solid #650808;
+        }
+        .key-down {
+             background-color:pink;
+             border: 1px solid black;
+        }
+        .submit {
+             background-color: blue;
+             border: 1px solid black;
+        }
+        .reset {
+             background-color:green;
+             border: 1px solid black;
+        }
+        
+        
+
+
+    </style>
+
+        <script>
+            function myfun1()
+            {
+                alert("click event")
+            }
+            function myfun2()
+            {
+                alert("double click event")
+            }
+            function myfun3()
+            {
+                document.write("mouse  over event")
+            }
+             function myfun4()
+            {
+                document.write("mouse  out event")
+            }
+             function myfun5()
+            {
+                document.write("mouse move event")
+            }
+             function myfun6()
+            {
+                document.write("mouse down event")
+            }
+             function myfun7()
+            {
+                document.write("mouse up event")
+            }
+             function key()
+            {
+                alert("key press event")
+            }
+             function key2()
+            {
+                alert("key up event")
+            }
+             function key3()
+            {
+                alert("key down event")
+            }
+            function form()
+            {
+                alert(" submit event")
+            }
+            function form2()
+            {
+                alert(" reset event")
+            }
+            function form3()
+            {
+                alert(" select event")
+            }
+              
+        
+        </script>
+    </head>
+    <body>
+        <h1>Mouse Events</h1>
+        <button  class="myButton" onclick="myfun1()"> click</button><br><br>
+        <button class="myButton2" ondblclick="myfun2()"> Double click</button><br><br>
+        <button class="myButton3" onmouseover="myfun3()"> onmouseover</button><br><br>
+        <button class="myButton4" onmouseout="myfun4()"> onmouseout</button><br><br>
+        <button class="myButton5" onmousemove="myfun5()"> onmousemove</button><br><br>
+        <button class="myButton6" onmousedown="myfun6()"> onmousedown</button><br><br>
+        <button class="myButton7" onmouseup="myfun7()">onmouseup</button><br><br>
+
+        <h1>keyboard Events</h1>
+        <input type="text" class="key-pressed" onkeypress="key()" placeholder="Type something..."><br><br>
+        <input type="text" class="key-up" onkeypress="key2()" placeholder="Type something..."><br><br>
+        <input type="text" class="key-down" onkeypress="key3()" placeholder="Type something...">
+
+
+        <h1>Form Events</h1>
+        <form onsubmit="form()" onreset="form2()">
+            Enter Name:<input type ="text" name="Fname" onselect="form3()"><br><br>
+            <input type="submit"  class="submit" value="submit">
+            <input type="reset" class="reset" value="reset">
+        </form>
+                     
+                      
+
+
+    </body>
+</html>
