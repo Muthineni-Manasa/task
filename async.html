@@ -1,0 +1,36 @@
+DOCTYPE html>
+<html>
+<head>
+    <title>Async/Await Demo</title>
+</head>
+<body>
+    <script>
+        // Fix: 'promises' should be 'Promise'
+        const p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve("p1 resolved value!!");
+            }, 10000); // 10 seconds
+        });
+
+        const p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve("p2 resolved value!!");
+            }, 50000); // 50 seconds
+        });
+
+        async function getData() {
+            console.log("hello world!");
+
+            const val = await p1;
+            console.log("javascript");
+            console.log(val);
+
+            const val2 = await p2;
+            console.log("javascript");
+            console.log(val2);
+        }
+
+        getData();
+    </script>
+</body>
+</html>
