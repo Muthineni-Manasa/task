@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Amazon Clone</title>
+  <style>
+    :root {
+      --primary: #ad8ddc;
+      --light-bg: #f0f2f5;
+      --dark-bg: #1e1e1e;
+      --text-light: #fff;
+      --text-dark: #000;
+      --accent: #09d410;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--primary);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .toggle-btn {
+      padding: 6px 12px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product-card {
+      border: 1px solid var(--primary);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      background-color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #045806;
+    }
+
+    #cart {
+      padding: 20px;
+    }
+
+    #modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal-content img {
+      width: 250px;
+      object-fit: contain;
+      margin: 10px 0;
+    }
+
+    .close-btn {
+      background-color: #da4f45;
+    }
+
+    .close-btn:hover {
+      background-color: #ed0909;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .cart-actions {
+      margin-left: 10px;
+    }
+
+    .load-more-container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --light-bg: #1e1e1e;
+        --text-dark: #fff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Amazon Clone</h1>
+    <div>
+      <input type="text" id="search" placeholder="Search products..." />
+      <button class="toggle-btn" onclick="toggleDarkMode()">🌙</button>
+    </div>
+  </header>
+
+  <div id="products" class="product-grid"></div>
+
+  <div class="load-more-container">
+    <button id="loadMoreBtn" onclick="loadNextBatch()">Load More</button>
+  </div>
+
+  <section id="cart">
+    <h2>Cart</h2>
+    <ul id="cartList"></ul>
+    <p id="total"></p>
+    <button onclick="clearCart()">Clear Cart</button>
+  </section>
+
+  <div id="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    const productsContainer = document.getElementById('products');
+    const cartList = document.getElementById('cartList');
+    const totalDisplay = document.getElementById('total');
+    const searchInput = document.getElementById('search');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+    let cart = [];
+    let allProducts = [];
+    let displayedCount = 0;
+    const BATCH_SIZE = 8;
+
+    fetch('https://fakestoreapi.com/products')
+      .then(res => res.json())
+      .then(products => {
+        allProducts = simulateMoreProducts(products, 5);
+        loadNextBatch();
+      });
+
+    function simulateMoreProducts(products, count) {
+      const extended = [];
+      for (let i = 0; i < count; i++) {
+        products.forEach(p => {
+          const clone = { ...p };
+          clone.id = p.id + i * 100;
+          clone.title = `${p.title} #${i + 1}`;
+          extended.push(clone);
+        });
+      }
+      return extended;
+    }
+
+    function loadNextBatch() {
+      const batch = allProducts.slice(displayedCount, displayedCount + BATCH_SIZE);
+      displayedCount += BATCH_SIZE;
+      displayProducts(batch);
+      if (displayedCount >= allProducts.length) {
+        loadMoreBtn.style.display = 'none';
+      }
+    }
+
+    function displayProducts(products) {
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.title}" />
+          <h3>${product.title}</h3>
+          <p>$${product.price}</p>
+        `;
+        card.onclick = () => showProductModal(product);
+        productsContainer.appendChild(card);
+      });
+    }
+
+    function showProductModal(product) {
+      modalContent.innerHTML = '';
+      const title = document.createElement('h2');
+      title.textContent = product.title;
+
+      const img = document.createElement('img');
+      img.src = product.image;
+
+      const desc = document.createElement('p');
+      desc.textContent = product.description;
+
+      const price = document.createElement('p');
+      price.innerHTML = `<strong>$${product.price}</strong>`;
+
+      const addBtn = document.createElement('button');
+      addBtn.textContent = 'Add to Cart';
+      addBtn.onclick = () => {
+        addToCart(product);
+        closeModal();
+      };
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'close-btn';
+      closeBtn.textContent = 'Close';
+      closeBtn.onclick = closeModal;
+
+      modalContent.append(title, img, desc, price, addBtn, closeBtn);
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    window.onclick = e => {
+      if (e.target === modal) closeModal();
+    };
+
+    function addToCart(product) {
+      const existing = cart.find(p => p.id === product.id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      updateCartUI();
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function updateCartUI() {
+      cartList.innerHTML = '';
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${item.title} - $${item.price} x ${item.quantity}
+          <span class="cart-actions">
+            <button onclick="changeQty(${index}, 1)">+</button>
+            <button onclick="changeQty(${index}, -1)">-</button>
+            <button onclick="removeFromCart(${index})">Remove</button>
+          </span>
+        `;
+        cartList.appendChild(li);
+      });
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function changeQty(index, delta) {
+      cart[index].quantity += delta;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      updateCartUI();
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function clearCart() {
+      cart = [];
+      updateCartUI();
+      localStorage.removeItem('cart');
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('cart');
+      if (saved) {
+        cart = JSON.parse(saved);
+        updateCartUI();
+      }
+    };
+
+    searchInput.addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allProducts.filter(p => p.title.toLowerCase().includes(term));
+      productsContainer.innerHTML = '';
+      displayedCount = filtered.length;
+      loadMoreBtn.style.display = 'none';
+      displayProducts(filtered);
+    });
+
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      document.body.style.backgroundColor = isDark ? 'var(--dark-bg)' : 'var(--light-bg)';
+      document.body.style.color = isDark ? 'var(--text-light)' : 'var(--text-dark)';
+    }
+  </script>
+</body>
+</html>
